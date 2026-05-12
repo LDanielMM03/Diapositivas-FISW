@@ -1,0 +1,2766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ArtesaTrace · Sistema de Gestión Administrativa para Talleres Artesanales</title>
+
+<!-- Reveal.js core -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css" id="theme" />
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --cream: #F5EFE0;
+    --cream-2: #EFE8D6;
+    --navy: #1F2C4C;
+    --navy-2: #2A3A66;
+    --red: #B23A3A;
+    --ochre: #C9A24B;
+    --ochre-2: #D9B65C;
+    --ink: #16213E;
+    --muted: #7A7466;
+    --green: #4F7A3A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body { background: var(--cream); }
+
+  .reveal {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--ink);
+    font-size: 24px;
+  }
+
+  .reveal .slides { text-align: left; }
+
+  /* Each section fills 1280x720, no overflow */
+  .reveal .slides section {
+    height: 100%;
+    width: 100%;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--navy);
+    text-transform: none;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    margin: 0 0 0.35em;
+    text-shadow: none;
+    line-height: 1.1;
+  }
+
+  .reveal h1 { font-size: 2.4em; }
+  .reveal h2 { font-size: 1.7em; }
+  .reveal h3 { font-size: 1.15em; color: var(--navy-2); }
+
+  .reveal p, .reveal li { line-height: 1.45; color: var(--ink); margin: 0 0 0.4em; }
+
+  .reveal strong { color: var(--navy); font-weight: 700; }
+
+  .reveal ul { list-style: none; padding-left: 0; margin: 0; }
+  .reveal ul li {
+    position: relative;
+    padding-left: 1.4em;
+    margin-bottom: 0.4em;
+  }
+  .reveal ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ochre);
+  }
+  .reveal ul li.dot-red::before { background: var(--red); }
+  .reveal ul li.dot-navy::before { background: var(--navy); }
+
+  /* Section tag */
+  .section-tag {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.55em;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.4em;
+    padding: 0.3em 0.85em;
+    border: 1.5px solid var(--red);
+    border-radius: 999px;
+  }
+
+  /* ============ PORTADA ============ */
+  .portada {
+    height: 100%;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--cream) 55%, var(--navy) 55%, var(--navy) 100%);
+    position: relative;
+  }
+  .portada-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    height: 100%;
+    gap: 0;
+  }
+  .portada-left {
+    padding: 50px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .portada-right {
+    padding: 50px 50px;
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .portada-right h1, .portada-right h3 { color: var(--cream); }
+  .portada-right strong { color: var(--ochre); }
+  .portada-meta {
+    font-size: 0.65em;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .portada-meta-right { color: rgba(245, 239, 224, 0.65); }
+  .portada-dots { display: flex; gap: 10px; margin-bottom: 24px; }
+  .portada-dots span {
+    display: block; width: 13px; height: 13px; border-radius: 50%;
+  }
+
+  /* Portada institutional logos */
+  .portada-logos {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .portada-logos .logo-tecnm {
+    height: 38px;
+    width: auto;
+    display: block;
+  }
+  .portada-logos .logo-ito {
+    height: 50px;
+    width: auto;
+    display: block;
+  }
+  .portada-logos .logos-separator {
+    display: inline-block;
+    width: 1px;
+    height: 40px;
+    background: rgba(31, 44, 76, 0.25);
+  }
+  .portada-institucion {
+    font-size: 0.95em;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+  }
+  .portada-institucion::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--red);
+    margin-top: 10px;
+    border-radius: 2px;
+  }
+  .dot-ochre { background: var(--ochre); }
+  .dot-red-c { background: var(--red); }
+  .dot-navy-c { background: var(--navy); }
+
+  .portada-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.4em;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 0.95;
+    margin: 0;
+  }
+  .portada-subtitle {
+    font-size: 0.85em;
+    color: var(--muted);
+    margin-top: 0.6em;
+    max-width: 92%;
+  }
+
+  .telar-svg { display: block; margin: 0 auto; }
+
+  .portada-equipo h3 { font-size: 1em; margin-bottom: 6px; color: var(--ochre); }
+  .portada-equipo p {
+    margin: 3px 0; font-size: 0.78em; color: var(--cream);
+  }
+
+  /* ============ GENERIC CONTENT SLIDE ============ */
+  .slide-wrap {
+    padding: 38px 60px 50px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .slide-header { margin-bottom: 18px; flex-shrink: 0; }
+  .slide-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Slide footer */
+  .slide-footer {
+    position: absolute;
+    bottom: 16px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.55em;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .slide-footer .brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 1.05em;
+  }
+  .slide-footer .brand span { color: var(--red); }
+
+  /* Cards layout */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 14px rgba(31, 44, 76, 0.07);
+    border-top: 4px solid var(--ochre);
+  }
+  .card-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8em;
+    font-weight: 900;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .card h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--navy);
+    font-size: 1em;
+    margin: 0 0 8px;
+  }
+  .card p {
+    font-size: 0.72em;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.45;
+  }
+  .card.navy { border-top-color: var(--navy); }
+  .card.red { border-top-color: var(--red); }
+  .card.green { border-top-color: var(--green); }
+
+  /* Two column */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: start;
+    flex: 1;
+    min-height: 0;
+  }
+  .two-col.uneven { grid-template-columns: 0.95fr 1.05fr; }
+
+  /* Diagram frames */
+  .diagrama-frame {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 6px 22px rgba(31, 44, 76, 0.08);
+    border: 1px solid rgba(31, 44, 76, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .diagrama-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Mockup slides */
+  .mockup-layout {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+  .mockup-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .mockup-frame {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 12px 30px rgba(31, 44, 76, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 0;
+  }
+  .mockup-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    display: block;
+  }
+
+  /* HU badge */
+  .hu-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--navy);
+    color: var(--cream);
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.72em;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+    width: fit-content;
+  }
+  .hu-badge .dot {
+    width: 7px; height: 7px;
+    background: var(--ochre);
+    border-radius: 50%;
+  }
+  .hu-badge.red { background: var(--red); }
+  .hu-badge.red .dot { background: var(--ochre); }
+
+  .hu-list {
+    background: var(--cream-2);
+    border-left: 3px solid var(--ochre);
+    padding: 10px 14px;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+  .hu-list strong { color: var(--red); }
+  .hu-list-item {
+    margin: 5px 0;
+    font-size: 0.72em;
+    line-height: 1.4;
+  }
+
+  /* HU table */
+  .hu-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.62em;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(31, 44, 76, 0.08);
+    table-layout: fixed;
+  }
+  .hu-table th {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.04em;
+    font-size: 0.95em;
+  }
+  .hu-table td {
+    padding: 5px 10px;
+    border-bottom: 1px solid rgba(31, 44, 76, 0.06);
+    line-height: 1.2;
+  }
+  .hu-table tr:nth-child(even) td { background: var(--cream-2); }
+  .hu-table .prio-alta { color: var(--red); font-weight: 700; }
+  .hu-table .prio-media { color: var(--ochre); font-weight: 700; }
+  .hu-table .prio-baja { color: var(--muted); font-weight: 500; }
+
+  /* Tech grid */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .tech-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 14px;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(31, 44, 76, 0.06);
+    border-bottom: 4px solid var(--navy);
+  }
+  .tech-card .tech-icon { font-size: 1.7em; margin-bottom: 4px; }
+  .tech-card h4 { color: var(--navy); font-size: 0.95em; margin: 0 0 4px; }
+  .tech-card p { font-size: 0.65em; color: var(--muted); margin: 0; }
+  .tech-card .role {
+    font-size: 0.55em;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-top: 3px;
+    margin-bottom: 4px;
+  }
+
+  /* Iteration timeline */
+  .iter-timeline {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .iter-card {
+    background: white;
+    border-radius: 9px;
+    padding: 13px 11px;
+    box-shadow: 0 3px 10px rgba(31, 44, 76, 0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .iter-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--ochre);
+  }
+  .iter-card .iter-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25em;
+    color: var(--red);
+    font-weight: 900;
+    line-height: 1;
+  }
+  .iter-card .iter-title {
+    font-size: 0.62em;
+    color: var(--navy);
+    font-weight: 700;
+    margin: 5px 0 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .iter-card .iter-desc {
+    font-size: 0.55em;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  /* Stats */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .stat { text-align: center; }
+  .stat .big {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.3em;
+    font-weight: 900;
+    color: var(--red);
+    line-height: 1;
+  }
+  .stat .label {
+    font-size: 0.62em;
+    color: var(--muted);
+    margin-top: 5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  /* Cierre */
+  .cierre {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: var(--cream);
+    text-align: center;
+    padding: 80px 70px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .cierre h1 {
+    color: var(--cream);
+    font-size: 4em;
+    margin: 0;
+  }
+  .cierre .accent { color: var(--ochre); }
+  .cierre p {
+    color: rgba(245, 239, 224, 0.75);
+    font-size: 1em;
+    margin-top: 16px;
+  }
+  .cierre .dots-deco {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .cierre .dots-deco span {
+    width: 14px; height: 14px; border-radius: 50%;
+  }
+
+  /* Reveal customizations */
+  .reveal .progress { color: var(--red); height: 4px; }
+  .reveal .controls { color: var(--navy); }
+  .reveal .slide-number {
+    background: rgba(31, 44, 76, 0.85);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  /* Validacion */
+  .validacion-box {
+    background: white;
+    border-left: 3px solid var(--green);
+    padding: 9px 13px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 0.7em;
+    color: var(--ink);
+    box-shadow: 0 2px 8px rgba(31,44,76,0.05);
+    line-height: 1.4;
+  }
+  .validacion-box strong { color: var(--green); }
+
+  /* Highlight */
+  .highlight {
+    background: linear-gradient(120deg, transparent 0%, var(--ochre-2) 0%, var(--ochre-2) 100%, transparent 100%);
+    background-size: 100% 35%;
+    background-repeat: no-repeat;
+    background-position: 0 88%;
+    padding: 0 2px;
+  }
+
+  /* Objetivos especificos: items with number column (no overlap) */
+  .obj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 22px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .obj-item {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(31,44,76,0.06);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    min-height: 80px;
+  }
+  .obj-item .obj-num {
+    background: var(--cream-2);
+    color: var(--red);
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.55em;
+    line-height: 1;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    min-width: 64px;
+  }
+  .obj-item .obj-text {
+    padding: 12px 16px;
+    font-size: 0.72em;
+    line-height: 1.45;
+    display: block;
+  }
+  .obj-item.full { grid-column: 1 / -1; }
+
+  /* HU representativas */
+  .hu-rep-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .hu-rep-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 18px;
+    box-shadow: 0 3px 12px rgba(31,44,76,0.06);
+    border-top: 4px solid var(--ochre);
+  }
+  .hu-rep-card.navy { border-top-color: var(--navy); }
+  .hu-rep-card.red { border-top-color: var(--red); }
+  .hu-rep-card.green { border-top-color: var(--green); }
+  .hu-rep-card.full { grid-column: 1 / -1; }
+  .hu-rep-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .hu-rep-id {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4em;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .hu-rep-tag {
+    font-size: 0.6em;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.05em;
+  }
+  .hu-rep-card h4 {
+    margin: 4px 0 6px;
+    font-size: 0.95em;
+  }
+  .hu-rep-card p {
+    font-size: 0.68em;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Scrum pillars */
+  .pillar-stack { display: flex; flex-direction: column; gap: 10px; }
+  .pillar {
+    background: white;
+    padding: 11px 16px;
+    border-radius: 9px;
+    box-shadow: 0 3px 10px rgba(31,44,76,0.06);
+    border-left: 4px solid var(--ochre);
+  }
+  .pillar h4 { margin: 0 0 3px; font-size: 0.92em; }
+  .pillar p { margin: 0; font-size: 0.65em; color: var(--muted); }
+  .pillar.red { border-left-color: var(--red); }
+  .pillar.navy { border-left-color: var(--navy); }
+
+  /* Scrum roles row */
+  .roles-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .role-cell { text-align: center; }
+  .role-cell .role-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2em;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .role-cell .role-desc {
+    font-size: 0.6em;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* In-slide source citation (small footer note above slide-footer) */
+  .slide-source {
+    position: absolute;
+    bottom: 38px;
+    left: 60px;
+    right: 60px;
+    font-size: 0.55em;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.45;
+    border-top: 1px solid rgba(31, 44, 76, 0.08);
+    padding-top: 8px;
+    text-align: left;
+  }
+  .slide-source strong {
+    color: var(--navy);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.85em;
+  }
+
+  /* References slide */
+  .refs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 26px;
+    margin-top: 4px;
+  }
+  .ref-item {
+    background: white;
+    border-left: 3px solid var(--ochre);
+    padding: 10px 14px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(31,44,76,0.04);
+    font-size: 0.55em;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .ref-item.red { border-left-color: var(--red); }
+  .ref-item.navy { border-left-color: var(--navy); }
+  .ref-item.green { border-left-color: var(--green); }
+  .ref-item .ref-authors {
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .ref-item .ref-title {
+    font-style: italic;
+    color: var(--ink);
+  }
+  .ref-item .ref-url {
+    color: var(--red);
+    word-break: break-all;
+    font-size: 0.92em;
+  }
+
+  /* Cronograma Gantt-style */
+  .cronograma {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 4px 14px rgba(31, 44, 76, 0.06);
+    overflow: hidden;
+  }
+  .crono-header, .crono-row {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(7, 1fr);
+    gap: 4px;
+    align-items: center;
+    padding: 5px 0;
+  }
+  .crono-header {
+    border-bottom: 2px solid var(--navy);
+    margin-bottom: 4px;
+  }
+  .crono-row {
+    border-bottom: 1px solid rgba(31, 44, 76, 0.05);
+  }
+  .crono-row:last-child { border-bottom: none; }
+  .crono-label {
+    font-size: 0.62em;
+    font-weight: 700;
+    color: var(--navy);
+    padding-right: 8px;
+  }
+  .crono-header .crono-label {
+    color: var(--muted);
+    font-size: 0.56em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .crono-week {
+    font-size: 0.55em;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .crono-cell {
+    position: relative;
+    height: 18px;
+    background: var(--cream-2);
+    border-radius: 4px;
+  }
+  .crono-cell .bar {
+    position: absolute;
+    top: 2px;
+    height: 14px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .bar-navy { background: var(--navy); }
+  .bar-ochre { background: var(--ochre); }
+  .bar-red { background: var(--red); }
+  .bar-green { background: var(--green); }
+  .crono-legend {
+    display: flex;
+    gap: 18px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    font-size: 0.6em;
+    color: var(--ink);
+  }
+  .crono-legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .crono-legend .dot-color {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Divisor de iteración */
+  .iter-divider {
+    height: 100%;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: var(--cream);
+    padding: 60px 80px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .iter-divider::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+      radial-gradient(circle at 80% 20%, rgba(201, 162, 75, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 15% 85%, rgba(178, 58, 58, 0.10) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .iter-divider-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 70px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .iter-divider-number {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 14em;
+    line-height: 0.85;
+    color: var(--ochre);
+    letter-spacing: -0.05em;
+  }
+  .iter-divider-number .label {
+    display: block;
+    font-size: 0.12em;
+    color: rgba(245, 239, 224, 0.6);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+  .iter-divider-content h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: 3em;
+    line-height: 1.05;
+    margin: 0 0 18px;
+    font-weight: 700;
+  }
+  .iter-divider-content h2 span {
+    color: var(--ochre);
+  }
+  .iter-divider-content p {
+    font-size: 0.85em;
+    color: rgba(245, 239, 224, 0.78);
+    line-height: 1.5;
+    margin: 0 0 22px;
+    max-width: 95%;
+  }
+  .iter-divider-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .iter-divider-tag {
+    background: rgba(245, 239, 224, 0.1);
+    color: var(--cream);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.65em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(245, 239, 224, 0.2);
+  }
+  .iter-divider-tag.ochre {
+    background: rgba(201, 162, 75, 0.18);
+    border-color: rgba(201, 162, 75, 0.5);
+    color: var(--ochre);
+  }
+  .iter-divider-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.6em;
+    color: rgba(245, 239, 224, 0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+  .iter-divider-footer .brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--ochre);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 1.1em;
+  }
+</style>
+</head>
+<body>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ========== 1. PORTADA ========== -->
+    <section data-transition="zoom">
+      <div class="portada">
+        <div class="portada-grid">
+          <div class="portada-left">
+            <div>
+              <!-- Logos institucionales -->
+              <div class="portada-logos">
+                <img src="assets/logo_tecnm.png" alt="Tecnológico Nacional de México" class="logo-tecnm" />
+                <span class="logos-separator"></span>
+                <img src="assets/logo_ito.png" alt="Instituto Tecnológico de Oaxaca" class="logo-ito" />
+              </div>
+              <div class="portada-institucion">Instituto Tecnológico de Oaxaca · Abril 2026</div>
+            </div>
+            <div>
+              <h1 class="portada-title">Artesa<span style="color: var(--red);">Trace</span></h1>
+              <p class="portada-subtitle">Sistema de Gestión Administrativa para Talleres Artesanales</p>
+            </div>
+            <div class="portada-meta">Fundamentos de Ingeniería de Software · Grupo 5SU</div>
+          </div>
+          <div class="portada-right">
+            <div style="text-align: center;">
+              <svg class="telar-svg" width="160" height="160" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <rect x="30" y="20" width="140" height="20" fill="#C9A24B" rx="2"/>
+                <rect x="40" y="40" width="10" height="120" fill="#F5EFE0"/>
+                <rect x="150" y="40" width="10" height="120" fill="#F5EFE0"/>
+                <rect x="30" y="160" width="140" height="20" fill="#C9A24B" rx="2"/>
+                <rect x="55" y="45" width="90" height="110" fill="#B23A3A"/>
+                <polygon points="100,55 110,70 100,85 90,70" fill="#C9A24B"/>
+                <polygon points="100,90 115,105 100,120 85,105" fill="#F5EFE0"/>
+                <polygon points="100,125 110,140 100,150 90,140" fill="#C9A24B"/>
+              </svg>
+            </div>
+            <div class="portada-equipo">
+              <h3>Equipo de Desarrollo</h3>
+              <p>Luis Fernando González Miguel</p>
+              <p>Luis Daniel Martínez Miguel</p>
+              <p class="portada-meta-right" style="margin-top: 12px;">Docente: Bernardo Roberto Cruz Hernández</p>
+            </div>
+            <div class="portada-meta-right">Ing. en Sistemas Computacionales</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 2. CONTEXTO ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">01 · Marco Contextual</span>
+          <h2>Talleres artesanales de Oaxaca</h2>
+        </div>
+        <div class="slide-body">
+          <div class="two-col">
+            <div>
+              <p style="font-size: 0.82em;">El proyecto se sitúa en talleres ubicados en comunidades del estado de Oaxaca, particularmente en <strong>Teotitlán del Valle</strong>, reconocida nacional e internacionalmente por la elaboración artesanal de <span class="highlight">tapetes de lana</span> mediante técnicas tradicionales heredadas por generaciones.</p>
+              <p style="font-size: 0.82em; margin-top: 12px;">Estos talleres operan como <strong>negocios familiares</strong>, donde la administración se realiza de manera manual:</p>
+              <ul style="font-size: 0.78em; margin-top: 8px;">
+                <li>Registros en cuadernos físicos o sin documentar.</li>
+                <li class="dot-red">Riesgo de pérdida o extravío de la información.</li>
+                <li>Asignación informal de precios por comparación.</li>
+                <li class="dot-navy">Sin mecanismos digitales contra imitaciones.</li>
+              </ul>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="card">
+                <div class="card-num">98%</div>
+                <h4>Negocios familiares</h4>
+                <p>De los talleres en la región operan como pequeñas unidades familiares sin sistematización administrativa.</p>
+              </div>
+              <div class="card red">
+                <div class="card-num">$ 0</div>
+                <h4>Costo del control actual</h4>
+                <p>No existe inversión en herramientas digitales, lo que se traduce en pérdida silenciosa de información financiera.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-source">
+          <strong>Fuentes:</strong> COPLADE (2016). Diagnóstico de la Cadena de Valor Artesanías Textil en las Regiones de Oaxaca. Gobierno del Estado de Oaxaca. · INEGI (2023). Estadísticas a propósito del Día Internacional del Artesano.
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Marco contextual</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 3. PROBLEMA ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">02 · Definición del problema</span>
+          <h2>Tres problemas concretos</h2>
+        </div>
+        <div class="slide-body">
+          <div class="cards-grid">
+            <div class="card navy">
+              <div class="card-num">01</div>
+              <h4>Inventario sin control</h4>
+              <p>No existen herramientas para gestionar el inventario de piezas terminadas ni rastrear su ubicación física (taller, consignación o venta directa).</p>
+            </div>
+            <div class="card red">
+              <div class="card-num">02</div>
+              <h4>Precios mal calculados</h4>
+              <p>Los artesanos no registran costos variables ni horas-hombre. El precio se asigna empíricamente, lo que subvalúa su trabajo.</p>
+            </div>
+            <div class="card">
+              <div class="card-num">03</div>
+              <h4>Sin defensa ante imitaciones</h4>
+              <p>El mercado globalizado incrementa el riesgo de plagio. No hay un mecanismo digital, confiable y de bajo costo para certificar la autenticidad.</p>
+            </div>
+          </div>
+          <p style="margin-top: 22px; font-size: 0.78em; color: var(--muted); font-style: italic;">
+            «La producción artesanal es un pilar de la economía y la identidad cultural de Oaxaca, pero la administración manual genera pérdida de información, mal cálculo de precios y vulnerabilidad ante imitaciones industriales.»
+          </p>
+        </div>
+        <div class="slide-source">
+          <strong>Fuentes:</strong> Aguilar Ramos & Alfonzo (2024). La protección contra la apropiación cultural a la luz de la Ley Harp en México. IIJ-UNAM. · Ramón Rodríguez et al. (2018). La ropa de tipo artesanal: desafíos y oportunidades en su comercialización.
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Capítulo 1</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4. OBJETIVO GENERAL ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">03 · Objetivo general</span>
+          <h2>Lo que ArtesaTrace propone</h2>
+        </div>
+        <div class="slide-body" style="justify-content: center;">
+          <div style="background: white; border-radius: 14px; padding: 32px 38px; box-shadow: 0 10px 30px rgba(31,44,76,0.1); border-left: 6px solid var(--red);">
+            <p style="font-size: 1em; line-height: 1.5; margin: 0;">
+              Desarrollar un <strong>sistema de información</strong> para la gestión administrativa de talleres artesanales, que permita el <span class="highlight">control digital de inventarios</span>, el <span class="highlight">cálculo automatizado de costos</span> de producción y la <span class="highlight">generación de certificados de autenticidad</span> digitales mediante códigos QR, con el fin de proteger el valor comercial y cultural de las piezas.
+            </p>
+          </div>
+          <div class="stats-row" style="margin-top: 28px;">
+            <div class="stat"><div class="big">3</div><div class="label">Problemáticas atendidas</div></div>
+            <div class="stat"><div class="big">6</div><div class="label">Módulos funcionales</div></div>
+            <div class="stat"><div class="big">17</div><div class="label">Historias de usuario</div></div>
+            <div class="stat"><div class="big">QR</div><div class="label">Certificación digital</div></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Objetivo general</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 5. OBJETIVOS ESPECÍFICOS ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">04 · Objetivos específicos</span>
+          <h2>Cinco metas concretas</h2>
+        </div>
+        <div class="slide-body">
+          <ol class="obj-grid">
+            <li class="obj-item">
+              <span class="obj-num">01</span>
+              <span class="obj-text">Recolectar y analizar <strong>requerimientos funcionales y no funcionales</strong> mediante el estudio del dominio del problema.</span>
+            </li>
+            <li class="obj-item">
+              <span class="obj-num">02</span>
+              <span class="obj-text">Diseñar una <strong>base de datos relacional</strong> que almacene piezas, categorías, precios, materiales, técnicas y estado.</span>
+            </li>
+            <li class="obj-item">
+              <span class="obj-num">03</span>
+              <span class="obj-text">Desarrollar un <strong>módulo de costeo</strong> que calcule automáticamente el precio sugerido con base en insumos y horas de trabajo.</span>
+            </li>
+            <li class="obj-item">
+              <span class="obj-num">04</span>
+              <span class="obj-text">Implementar un <strong>generador de certificados PDF</strong> con código QR único por pieza para verificación pública.</span>
+            </li>
+            <li class="obj-item full">
+              <span class="obj-num">05</span>
+              <span class="obj-text">Crear un <strong>módulo de gestión de consignaciones</strong> para registrar y dar seguimiento a piezas enviadas a galerías o intermediarios comerciales, facilitando la conciliación de ventas.</span>
+            </li>
+          </ol>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Objetivos específicos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 6. METODOLOGÍA SCRUM (INTRO) ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">05 · Metodología</span>
+          <h2>¿Por qué Scrum?</h2>
+        </div>
+        <div class="slide-body">
+          <div class="two-col uneven">
+            <div>
+              <p style="font-size: 0.82em;">Scrum es un <strong>marco de trabajo ágil</strong> que organiza el desarrollo en iteraciones cortas llamadas <em>Sprints</em>. A diferencia del modelo en cascada, no asume que los requisitos se conocen al inicio del proyecto.</p>
+              <p style="font-size: 0.82em; margin-top: 12px;">Se eligió porque permite:</p>
+              <ul style="font-size: 0.78em;">
+                <li><strong>Entrega incremental</strong> de módulos funcionales.</li>
+                <li class="dot-red"><strong>Validación temprana</strong> con artesanos sin formación técnica.</li>
+                <li><strong>Adaptación a cambios</strong> sin afectar todo el desarrollo.</li>
+                <li class="dot-navy"><strong>Reducción de riesgos</strong> mediante pruebas tempranas.</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="font-size: 1em; margin-bottom: 12px;">Tres pilares empíricos</h3>
+              <div class="pillar-stack">
+                <div class="pillar">
+                  <h4>Transparencia</h4>
+                  <p>Los aspectos del proceso son visibles para todos los involucrados.</p>
+                </div>
+                <div class="pillar red">
+                  <h4>Inspección</h4>
+                  <p>Los artefactos y el progreso se inspeccionan con frecuencia.</p>
+                </div>
+                <div class="pillar navy">
+                  <h4>Adaptación</h4>
+                  <p>El proceso se ajusta cuando se detectan desviaciones.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-source">
+          <strong>Fuentes:</strong> Schwaber, K. & Sutherland, J. (2020). The Scrum Guide: The Definitive Guide to Scrum. · Sommerville, I. (2015). Software Engineering (10.ª ed.). Pearson.
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Marco teórico · Scrum</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FASES DE SCRUM ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">05 · Metodología</span>
+          <h2>Fases de Scrum</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">El ciclo iterativo que recorre cada Sprint del proyecto.</p>
+        </div>
+        <div class="slide-body" style="justify-content: center;">
+
+          <!-- Diagrama horizontal de fases -->
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; position: relative;">
+            <!-- Flecha conectora -->
+            <div style="position: absolute; top: 38%; left: 5%; right: 5%; height: 2px; background: linear-gradient(90deg, var(--navy) 0%, var(--ochre) 50%, var(--red) 100%); z-index: 0;"></div>
+
+            <div style="background: white; border-radius: 10px; padding: 14px 12px; box-shadow: 0 4px 14px rgba(31,44,76,0.08); text-align: center; position: relative; z-index: 1;">
+              <div style="width: 44px; height: 44px; background: var(--navy); color: var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2em;">1</div>
+              <h4 style="margin: 0 0 4px; font-size: 0.78em;">Product Backlog</h4>
+              <p style="margin: 0; font-size: 0.55em; color: var(--muted); line-height: 1.4;">Lista priorizada de Historias de Usuario que captura todo lo que el producto necesita hacer.</p>
+            </div>
+
+            <div style="background: white; border-radius: 10px; padding: 14px 12px; box-shadow: 0 4px 14px rgba(31,44,76,0.08); text-align: center; position: relative; z-index: 1;">
+              <div style="width: 44px; height: 44px; background: var(--ochre); color: var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2em;">2</div>
+              <h4 style="margin: 0 0 4px; font-size: 0.78em;">Sprint Planning</h4>
+              <p style="margin: 0; font-size: 0.55em; color: var(--muted); line-height: 1.4;">Selección de HU del backlog para la iteración y definición del Sprint Backlog.</p>
+            </div>
+
+            <div style="background: white; border-radius: 10px; padding: 14px 12px; box-shadow: 0 4px 14px rgba(31,44,76,0.08); text-align: center; position: relative; z-index: 1;">
+              <div style="width: 44px; height: 44px; background: var(--ochre); color: var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2em;">3</div>
+              <h4 style="margin: 0 0 4px; font-size: 0.78em;">Sprint (Desarrollo)</h4>
+              <p style="margin: 0; font-size: 0.55em; color: var(--muted); line-height: 1.4;">Construcción del incremento con Daily Scrum diario; el alcance no se modifica durante el Sprint.</p>
+            </div>
+
+            <div style="background: white; border-radius: 10px; padding: 14px 12px; box-shadow: 0 4px 14px rgba(31,44,76,0.08); text-align: center; position: relative; z-index: 1;">
+              <div style="width: 44px; height: 44px; background: var(--red); color: var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2em;">4</div>
+              <h4 style="margin: 0 0 4px; font-size: 0.78em;">Sprint Review</h4>
+              <p style="margin: 0; font-size: 0.55em; color: var(--muted); line-height: 1.4;">Inspección del incremento terminado y ajuste del Product Backlog si surge nueva información.</p>
+            </div>
+
+            <div style="background: white; border-radius: 10px; padding: 14px 12px; box-shadow: 0 4px 14px rgba(31,44,76,0.08); text-align: center; position: relative; z-index: 1;">
+              <div style="width: 44px; height: 44px; background: var(--red); color: var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2em;">5</div>
+              <h4 style="margin: 0 0 4px; font-size: 0.78em;">Retrospective</h4>
+              <p style="margin: 0; font-size: 0.55em; color: var(--muted); line-height: 1.4;">Reflexión sobre proceso, herramientas y relaciones para mejorar la siguiente iteración.</p>
+            </div>
+          </div>
+
+          <!-- Indicador de ciclo -->
+          <div style="display: flex; justify-content: center; align-items: center; gap: 14px; background: var(--cream-2); border-radius: 999px; padding: 10px 24px; max-width: fit-content; margin: 0 auto;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/>
+            </svg>
+            <p style="margin: 0; font-size: 0.68em; color: var(--ink);"><strong>Ciclo iterativo:</strong> tras la Retrospective inicia un nuevo Sprint Planning. El proceso se repite hasta agotar el Product Backlog.</p>
+          </div>
+
+        </div>
+        <div class="slide-source">
+          <strong>Fuente:</strong> Schwaber, K. & Sutherland, J. (2020). The Scrum Guide: The Definitive Guide to Scrum. Scrum.org.
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Ciclo Scrum · 5 fases</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 7. SCRUM APLICADO: 6 ITERACIONES ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">05 · Metodología aplicada</span>
+          <h2>Seis iteraciones, seis entregas</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">El sistema se construyó incrementalmente, entregando módulos funcionales en cada sprint.</p>
+        </div>
+        <div class="slide-body" style="gap: 22px;">
+          <div class="iter-timeline">
+            <div class="iter-card">
+              <div class="iter-num">01</div>
+              <div class="iter-title">Fundamentos</div>
+              <div class="iter-desc">Login, catálogos maestros y registro de materia prima.</div>
+            </div>
+            <div class="iter-card">
+              <div class="iter-num">02</div>
+              <div class="iter-title">Inventario</div>
+              <div class="iter-desc">Registro de artesanías y carga de fotografías de piezas.</div>
+            </div>
+            <div class="iter-card">
+              <div class="iter-num">03</div>
+              <div class="iter-title">Costeo</div>
+              <div class="iter-desc">Cálculo de precio sugerido y asignación de precio final.</div>
+            </div>
+            <div class="iter-card">
+              <div class="iter-num">04</div>
+              <div class="iter-title">Certificación</div>
+              <div class="iter-desc">Códigos QR, certificados PDF y verificación pública.</div>
+            </div>
+            <div class="iter-card">
+              <div class="iter-num">05</div>
+              <div class="iter-title">Ventas</div>
+              <div class="iter-desc">Consignación, venta final y actualización de inventario.</div>
+            </div>
+            <div class="iter-card">
+              <div class="iter-num">06</div>
+              <div class="iter-title">Reportes</div>
+              <div class="iter-desc">Reportes de ventas, estadísticas y respaldo de BD.</div>
+            </div>
+          </div>
+          <div class="roles-row">
+            <div class="role-cell">
+              <div class="role-title" style="color: var(--navy);">Product Owner</div>
+              <div class="role-desc">Maximiza el valor del producto y gestiona el Backlog.</div>
+            </div>
+            <div class="role-cell">
+              <div class="role-title" style="color: var(--red);">Scrum Master</div>
+              <div class="role-desc">Asegura la correcta aplicación del marco y elimina impedimentos.</div>
+            </div>
+            <div class="role-cell">
+              <div class="role-title" style="color: var(--ochre);">Dev Team</div>
+              <div class="role-desc">Equipo autoorganizado que entrega el incremento.</div>
+            </div>
+            <div class="role-cell">
+              <div class="role-title" style="color: var(--green);">Eventos</div>
+              <div class="role-desc">Planning, Daily, Review y Retrospective por sprint.</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-source">
+          <strong>Fuente:</strong> Schwaber, K. & Sutherland, J. (2020). The Scrum Guide: The Definitive Guide to Scrum — The Rules of the Game. Scrum.org.
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>6 iteraciones · 17 HU</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 8. STACK TECNOLÓGICO ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">06 · Stack tecnológico</span>
+          <h2>Las herramientas detrás del sistema</h2>
+        </div>
+        <div class="slide-body">
+          <div class="tech-grid">
+            <div class="tech-card" style="border-bottom-color: var(--ochre);">
+              <div class="tech-icon">🟨</div>
+              <h4>JavaScript</h4>
+              <div class="role">Lenguaje base</div>
+              <p>Lenguaje interpretado y asíncrono, en cliente y servidor.</p>
+            </div>
+            <div class="tech-card" style="border-bottom-color: var(--green);">
+              <div class="tech-icon">🟢</div>
+              <h4>Node.js + Express</h4>
+              <div class="role">Backend</div>
+              <p>Entorno V8 con framework minimalista para APIs REST.</p>
+            </div>
+            <div class="tech-card" style="border-bottom-color: var(--navy);">
+              <div class="tech-icon">⚛️</div>
+              <h4>React</h4>
+              <div class="role">Frontend</div>
+              <p>Biblioteca para construir interfaces basadas en componentes.</p>
+            </div>
+            <div class="tech-card" style="border-bottom-color: var(--red);">
+              <div class="tech-icon">🐘</div>
+              <h4>PostgreSQL</h4>
+              <div class="role">Base de datos</div>
+              <p>Gestor relacional robusto con cumplimiento de estándares SQL.</p>
+            </div>
+            <div class="tech-card" style="border-bottom-color: var(--ochre);">
+              <div class="tech-icon">📄</div>
+              <h4>PDFKit</h4>
+              <div class="role">Certificados</div>
+              <p>Generación programática de certificados de autenticidad PDF.</p>
+            </div>
+            <div class="tech-card" style="border-bottom-color: var(--navy);">
+              <div class="tech-icon">⬛</div>
+              <h4>QRCode.js</h4>
+              <div class="role">Identidad digital</div>
+              <p>Genera el código QR único por pieza, sin dependencias externas.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Marco teórico · Herramientas</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== REQUISITOS FUNCIONALES Y NO FUNCIONALES ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">06 · Ingeniería de requisitos</span>
+          <h2>Requisitos funcionales y no funcionales</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Lo que el sistema debe hacer y bajo qué condiciones de calidad.</p>
+        </div>
+        <div class="slide-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; height: 100%;">
+
+            <div style="background: white; border-radius: 10px; padding: 14px 18px; box-shadow: 0 3px 12px rgba(31,44,76,0.06); border-top: 4px solid var(--red); display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;">
+                <span style="font-family: 'Playfair Display', serif; font-weight: 900; color: var(--red); font-size: 1.4em; line-height: 1;">RF</span>
+                <h3 style="margin: 0; font-size: 0.95em;">Requisitos funcionales</h3>
+              </div>
+              <p style="font-size: 0.62em; color: var(--muted); margin: 0 0 8px;">Lo que el sistema debe <strong style="color: var(--red);">hacer</strong>.</p>
+              <ul style="font-size: 0.63em; margin: 0; flex: 1;">
+                <li><strong>RF-01.</strong> Autenticar usuarios mediante correo y contraseña hasheada.</li>
+                <li class="dot-red"><strong>RF-02.</strong> Gestionar catálogos de técnicas, proveedores y categorías (CRUD).</li>
+                <li><strong>RF-03.</strong> Registrar entrada de materia prima vinculada a proveedor.</li>
+                <li class="dot-navy"><strong>RF-04.</strong> Crear artesanías con material, técnica, descripción y fotografías.</li>
+                <li><strong>RF-05.</strong> Calcular precio sugerido a partir de insumos y mano de obra.</li>
+                <li class="dot-red"><strong>RF-06.</strong> Generar código QR único por pieza.</li>
+                <li><strong>RF-07.</strong> Ensamblar certificado de autenticidad en PDF.</li>
+                <li class="dot-navy"><strong>RF-08.</strong> Exponer ruta pública de verificación QR sin sesión.</li>
+                <li><strong>RF-09.</strong> Registrar consignaciones, ventas y cambios de estado.</li>
+                <li class="dot-red"><strong>RF-10.</strong> Generar reportes de ventas por periodo.</li>
+                <li><strong>RF-11.</strong> Generar respaldo de base de datos en formato .sql.</li>
+              </ul>
+            </div>
+
+            <div style="background: white; border-radius: 10px; padding: 14px 18px; box-shadow: 0 3px 12px rgba(31,44,76,0.06); border-top: 4px solid var(--navy); display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;">
+                <span style="font-family: 'Playfair Display', serif; font-weight: 900; color: var(--navy); font-size: 1.4em; line-height: 1;">RNF</span>
+                <h3 style="margin: 0; font-size: 0.95em;">Requisitos no funcionales</h3>
+              </div>
+              <p style="font-size: 0.62em; color: var(--muted); margin: 0 0 8px;"><strong style="color: var(--navy);">Cómo</strong> y bajo qué condiciones debe funcionar.</p>
+              <ul style="font-size: 0.63em; margin: 0; flex: 1;">
+                <li><strong>RNF-01 · Usabilidad.</strong> Interfaz comprensible por artesanos sin formación técnica; lenguaje del oficio.</li>
+                <li class="dot-red"><strong>RNF-02 · Seguridad.</strong> Contraseñas almacenadas con hash; sesiones autenticadas por token.</li>
+                <li><strong>RNF-03 · Rendimiento.</strong> Pantallas principales deben cargar en menos de 3 segundos.</li>
+                <li class="dot-navy"><strong>RNF-04 · Disponibilidad.</strong> El sistema opera localmente sin requerir internet permanente.</li>
+                <li><strong>RNF-05 · Portabilidad.</strong> Compatible con navegadores modernos (Chrome, Firefox, Edge).</li>
+                <li class="dot-red"><strong>RNF-06 · Mantenibilidad.</strong> Código modular con separación cliente / servidor / base de datos.</li>
+                <li><strong>RNF-07 · Integridad.</strong> Restricciones FK aseguran consistencia referencial.</li>
+                <li class="dot-navy"><strong>RNF-08 · Escalabilidad.</strong> Diseño relacional preparado para múltiples talleres.</li>
+                <li><strong>RNF-09 · Confiabilidad.</strong> Respaldos semanales recomendados; recuperación ante fallos.</li>
+                <li class="dot-red"><strong>RNF-10 · Trazabilidad.</strong> Historial inmutable de movimientos por pieza.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>11 RF · 10 RNF</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== HU OVERVIEW (movida antes del ER) ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">07 · Ingeniería de requisitos</span>
+          <h2>Lista maestra de Historias de Usuario</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">17 historias en 6 iteraciones, priorizadas según valor de negocio.</p>
+        </div>
+        <div class="slide-body">
+          <table class="hu-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">HU</th>
+                <th>Nombre</th>
+                <th style="width: 60px;">Iter.</th>
+                <th style="width: 90px;">Prioridad</th>
+                <th style="width: 60px;">Pts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>01</strong></td><td>Acceso al sistema (Login)</td><td>1</td><td class="prio-alta">Alta</td><td>2</td></tr>
+              <tr><td><strong>02</strong></td><td>Agregar nuevos elementos a catálogos</td><td>1</td><td class="prio-media">Media</td><td>2</td></tr>
+              <tr><td><strong>03</strong></td><td>Editar elementos de catálogos</td><td>1</td><td class="prio-baja">Baja</td><td>2</td></tr>
+              <tr><td><strong>04</strong></td><td>Eliminar elementos de catálogos</td><td>1</td><td class="prio-baja">Baja</td><td>3</td></tr>
+              <tr><td><strong>05</strong></td><td>Registro de entrada de materia prima y proveedor</td><td>1</td><td class="prio-alta">Alta</td><td>3</td></tr>
+              <tr><td><strong>06</strong></td><td>Registro de nueva artesanía (Inventario)</td><td>2</td><td class="prio-alta">Alta</td><td>5</td></tr>
+              <tr><td><strong>07</strong></td><td>Subir fotografías de la pieza</td><td>2</td><td class="prio-alta">Alta</td><td>3</td></tr>
+              <tr><td><strong>08</strong></td><td>Cálculo de precio sugerido (Costeo)</td><td>3</td><td class="prio-alta">Alta</td><td>8</td></tr>
+              <tr><td><strong>09</strong></td><td>Asignación de precio de venta final</td><td>3</td><td class="prio-media">Media</td><td>2</td></tr>
+              <tr><td><strong>10</strong></td><td>Generación de código QR único</td><td>4</td><td class="prio-alta">Alta</td><td>5</td></tr>
+              <tr><td><strong>11</strong></td><td>Ensamblado de certificado PDF</td><td>4</td><td class="prio-alta">Alta</td><td>5</td></tr>
+              <tr><td><strong>12</strong></td><td>Verificación pública (Escaneo cliente)</td><td>4</td><td class="prio-alta">Alta</td><td>8</td></tr>
+              <tr><td><strong>13</strong></td><td>Registro de salida a consignación</td><td>5</td><td class="prio-alta">Alta</td><td>3</td></tr>
+              <tr><td><strong>14</strong></td><td>Registro de venta final</td><td>5</td><td class="prio-alta">Alta</td><td>3</td></tr>
+              <tr><td><strong>15</strong></td><td>Actualización automática de inventario</td><td>5</td><td class="prio-alta">Alta</td><td>5</td></tr>
+              <tr><td><strong>16</strong></td><td>Generación de reporte de ventas</td><td>6</td><td class="prio-media">Media</td><td>5</td></tr>
+              <tr><td><strong>17</strong></td><td>Respaldo de base de datos</td><td>6</td><td class="prio-baja">Baja</td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Tabla 3.3 · Product Backlog</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 12. HU REPRESENTATIVAS ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">10 · Historias representativas</span>
+          <h2>Seis HU clave, una por hito</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Las historias que vamos a ver mapeadas a las pantallas del maquetado.</p>
+        </div>
+        <div class="slide-body">
+          <div class="hu-rep-grid">
+            <div class="hu-rep-card navy">
+              <div class="hu-rep-header">
+                <span class="hu-rep-id">HU-01</span>
+                <span class="hu-rep-tag">ALTA · 2 PTS</span>
+              </div>
+              <h4>Acceso al sistema (Login)</h4>
+              <p><em>«Como artesano, quiero acceder al sistema mediante mi correo y contraseña, para asegurar que solo personal autorizado modifique el inventario.»</em></p>
+            </div>
+            <div class="hu-rep-card">
+              <div class="hu-rep-header">
+                <span class="hu-rep-id">HU-06</span>
+                <span class="hu-rep-tag">ALTA · 5 PTS</span>
+              </div>
+              <h4>Registro de nueva artesanía</h4>
+              <p><em>«Quiero registrar una nueva pieza seleccionando material, técnica y nombre, para mantener un catálogo digital organizado.»</em></p>
+            </div>
+            <div class="hu-rep-card red">
+              <div class="hu-rep-header">
+                <span class="hu-rep-id">HU-08</span>
+                <span class="hu-rep-tag">ALTA · 8 PTS</span>
+              </div>
+              <h4>Cálculo de precio sugerido</h4>
+              <p><em>«Quiero que el sistema sume el costo de insumos y multiplique mis horas de trabajo por mi tarifa, para sugerirme un precio justo.»</em></p>
+            </div>
+            <div class="hu-rep-card green">
+              <div class="hu-rep-header">
+                <span class="hu-rep-id">HU-10/11</span>
+                <span class="hu-rep-tag">ALTA · 10 PTS</span>
+              </div>
+              <h4>Generación de QR + Certificado PDF</h4>
+              <p><em>«Quiero un código QR único y un PDF con foto y datos de la obra, para entregarlo al cliente como garantía de originalidad.»</em></p>
+            </div>
+            <div class="hu-rep-card navy">
+              <div class="hu-rep-header">
+                <span class="hu-rep-id">HU-14</span>
+                <span class="hu-rep-tag">ALTA · 3 PTS</span>
+              </div>
+              <h4>Registro de venta final</h4>
+              <p><em>«Como artesano, quiero registrar la venta de una pieza y el monto final cobrado, para tener un registro histórico de mis ingresos reales.»</em></p>
+            </div>
+            <div class="hu-rep-card red">
+              <div class="hu-rep-header">
+                <span class="hu-rep-id">HU-16</span>
+                <span class="hu-rep-tag">MEDIA · 5 PTS</span>
+              </div>
+              <h4>Generación de reporte de ventas</h4>
+              <p><em>«Como artesano, quiero generar reportes de mis ventas por mes y año, para conocer mis ingresos reales y mis piezas más vendidas.»</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>6 historias · cada una con su pantalla</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CASOS DE USO ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">08 · Análisis de requisitos</span>
+          <h2>Casos de uso del sistema</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Acciones que cada tipo de actor puede realizar en ArtesaTrace.</p>
+        </div>
+        <div class="slide-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+            <div style="background: white; border-radius: 10px; padding: 16px 18px; box-shadow: 0 3px 12px rgba(31,44,76,0.06); border-top: 4px solid var(--navy);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1F2C4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/>
+                </svg>
+                <div>
+                  <h4 style="margin: 0; font-size: 1em;">Artesano</h4>
+                  <span style="font-size: 0.55em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;">Actor principal</span>
+                </div>
+              </div>
+              <ul style="font-size: 0.65em; margin: 0;">
+                <li>Iniciar sesión</li>
+                <li class="dot-red">Gestionar catálogos (técnicas, proveedores)</li>
+                <li>Registrar materia prima</li>
+                <li class="dot-navy">Registrar nueva artesanía</li>
+                <li>Subir fotografías de la pieza</li>
+                <li class="dot-red">Calcular precio sugerido</li>
+                <li>Asignar precio de venta final</li>
+                <li class="dot-navy">Cambiar estado de pieza</li>
+                <li>Registrar venta</li>
+                <li class="dot-red">Generar reporte de ventas</li>
+              </ul>
+            </div>
+
+            <div style="background: white; border-radius: 10px; padding: 16px 18px; box-shadow: 0 3px 12px rgba(31,44,76,0.06); border-top: 4px solid var(--red);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#B23A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <div>
+                  <h4 style="margin: 0; font-size: 1em;">Administrador</h4>
+                  <span style="font-size: 0.55em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;">Actor con privilegios</span>
+                </div>
+              </div>
+              <ul style="font-size: 0.65em; margin: 0;">
+                <li>Realizar todos los casos de uso del Artesano</li>
+                <li class="dot-red">Generar certificado QR + PDF</li>
+                <li>Administrar permisos de usuario</li>
+                <li class="dot-navy">Generar respaldo de base de datos</li>
+                <li>Restaurar respaldo</li>
+                <li class="dot-red">Acceder a historial completo de movimientos</li>
+                <li>Exportar reportes en formato externo</li>
+              </ul>
+            </div>
+
+            <div style="background: white; border-radius: 10px; padding: 16px 18px; box-shadow: 0 3px 12px rgba(31,44,76,0.06); border-top: 4px solid var(--ochre);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C9A24B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7zM13 13h4v4h-4z"/>
+                </svg>
+                <div>
+                  <h4 style="margin: 0; font-size: 1em;">Cliente final</h4>
+                  <span style="font-size: 0.55em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;">Actor externo · sin sesión</span>
+                </div>
+              </div>
+              <ul style="font-size: 0.65em; margin: 0;">
+                <li>Escanear código QR de una pieza</li>
+                <li class="dot-red">Visualizar ficha pública de autenticidad</li>
+                <li>Consultar artesano, técnica y materiales</li>
+                <li class="dot-navy">Descargar certificado en PDF</li>
+                <li>Verificar folio del certificado</li>
+              </ul>
+              <p style="margin-top: 10px; font-size: 0.6em; color: var(--muted); font-style: italic;">El cliente accede sin credenciales; solo lectura pública.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>3 actores · casos de uso del sistema</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CRONOGRAMA DE ACTIVIDADES ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">09 · Gestión del proyecto</span>
+          <h2>Cronograma de actividades</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Distribución de las 6 iteraciones de Scrum a lo largo del semestre.</p>
+        </div>
+        <div class="slide-body">
+          <div class="cronograma">
+            <div class="crono-header">
+              <div class="crono-label">Actividad</div>
+              <div class="crono-week">Sem 1-2</div>
+              <div class="crono-week">Sem 3-4</div>
+              <div class="crono-week">Sem 5-6</div>
+              <div class="crono-week">Sem 7-8</div>
+              <div class="crono-week">Sem 9-10</div>
+              <div class="crono-week">Sem 11-12</div>
+              <div class="crono-week">Sem 13-14</div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Análisis de requisitos</div>
+              <div class="crono-cell"><span class="bar bar-navy" style="left: 0%; width: 100%;"></span></div>
+              <div class="crono-cell"><span class="bar bar-navy" style="left: 0%; width: 50%;"></span></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Iteración 1 · Fundamentos</div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"><span class="bar bar-ochre" style="left: 30%; width: 70%;"></span></div>
+              <div class="crono-cell"><span class="bar bar-ochre" style="left: 0%; width: 60%;"></span></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Iteración 2 · Inventario</div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"><span class="bar bar-ochre" style="left: 50%; width: 50%;"></span></div>
+              <div class="crono-cell"><span class="bar bar-ochre" style="left: 0%; width: 70%;"></span></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Iteración 3 · Costeo</div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"><span class="bar bar-red" style="left: 60%; width: 40%;"></span></div>
+              <div class="crono-cell"><span class="bar bar-red" style="left: 0%; width: 70%;"></span></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Iteración 4 · Certificación</div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"><span class="bar bar-red" style="left: 60%; width: 40%;"></span></div>
+              <div class="crono-cell"><span class="bar bar-red" style="left: 0%; width: 60%;"></span></div>
+              <div class="crono-cell"></div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Iteración 5 · Ventas</div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"><span class="bar bar-ochre" style="left: 50%; width: 50%;"></span></div>
+              <div class="crono-cell"><span class="bar bar-ochre" style="left: 0%; width: 40%;"></span></div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Iteración 6 · Reportes</div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"><span class="bar bar-navy" style="left: 30%; width: 70%;"></span></div>
+            </div>
+
+            <div class="crono-row">
+              <div class="crono-label">Pruebas y documentación</div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"></div>
+              <div class="crono-cell"><span class="bar bar-green" style="left: 50%; width: 50%;"></span></div>
+            </div>
+          </div>
+          <div class="crono-legend">
+            <span><span class="dot-color" style="background: var(--navy);"></span>Análisis / Reportes</span>
+            <span><span class="dot-color" style="background: var(--ochre);"></span>Iteraciones funcionales</span>
+            <span><span class="dot-color" style="background: var(--red);"></span>Iteraciones críticas (8 pts)</span>
+            <span><span class="dot-color" style="background: var(--green);"></span>QA / Documentación</span>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>14 semanas · 6 sprints</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 9. DIAGRAMA ENTIDAD-RELACIÓN ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">07 · Diseño · Base de datos</span>
+          <h2>Diagrama Entidad–Relación</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Modelo conceptual: cómo se relacionan las entidades del dominio del taller.</p>
+        </div>
+        <div class="slide-body">
+          <div class="diagrama-frame">
+            <img src="assets/diagrama_er.jpg" alt="Diagrama Entidad-Relación" />
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Diagrama ER · acumulado iteraciones 1 a 6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 10. DIAGRAMA DE CLASES ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">08 · Diseño · Modelo orientado a objetos</span>
+          <h2>Diagrama de Clases</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Estructura del sistema en clases con atributos, métodos y relaciones de asociación.</p>
+        </div>
+        <div class="slide-body">
+          <div class="diagrama-frame">
+            <img src="assets/diagrama_class.jpg" alt="Diagrama de Clases UML" />
+          </div>
+        </div>
+        <div class="slide-source">
+          <strong>Fuente:</strong> Larman, C. (2004). Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative Development (3.ª ed.). Prentice Hall.
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Diagrama de clases UML</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 11. DIAGRAMA RELACIONAL ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">09 · Diseño · Base de datos</span>
+          <h2>Modelo Relacional completo</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Todas las tablas con sus tipos, PK y FK — acumulado de las 6 iteraciones.</p>
+        </div>
+        <div class="slide-body">
+          <div class="diagrama-frame">
+            <img src="assets/diagrama_relacional.jpg" alt="Diagrama Relacional completo" />
+          </div>
+        </div>
+        <div class="slide-source">
+          <strong>Fuente:</strong> Sommerville, I. (2015). Software Engineering (10.ª ed.). Pearson.
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Modelo relacional · iteraciones 1 a 6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIVISOR ITERACIÓN 1 ========== -->
+    <section data-transition="zoom">
+      <div class="iter-divider">
+        <div class="iter-divider-grid">
+          <div class="iter-divider-number">
+            <span class="label">Iteración</span>01
+          </div>
+          <div class="iter-divider-content">
+            <h2>Fundamentos<br/><span>del sistema</span></h2>
+            <p>Bases del proyecto: autenticación de usuarios, catálogos maestros (técnicas, proveedores, categorías) y registro de entrada de materia prima vinculada a proveedor.</p>
+            <div class="iter-divider-tags">
+              <span class="iter-divider-tag ochre">HU-01</span>
+              <span class="iter-divider-tag">HU-02</span>
+              <span class="iter-divider-tag">HU-03</span>
+              <span class="iter-divider-tag">HU-04</span>
+              <span class="iter-divider-tag ochre">HU-05</span>
+            </div>
+          </div>
+        </div>
+        <div class="iter-divider-footer">
+          <span class="brand">Artesa<span style="color: var(--red);">Trace</span></span>
+          <span>Sprint 1 · Fundamentos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 13. MAQUETADO: LOGIN (HU-01) ========== -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">11 · Maquetado · Iteración 1</span>
+          <h2>Pantalla de inicio de sesión</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-01 · Acceso al sistema</span>
+              <h3>Puerta de entrada al panel administrativo</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El sistema valida credenciales del artesano antes de permitir el acceso a datos financieros y de inventario.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano / Administrador</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 2 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 1 (Fundamentos)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> Rechaza credenciales incorrectas con mensaje de error. Existe método de recuperación por correo.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/mockup_login.jpg" alt="Mockup Login" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Maquetado 1/5</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ITERACIÓN 1 · Pantallas reales ========== -->
+
+    <!-- Iter 1 · Pantalla 1 · Catálogo de Técnicas Artesanales (HU-02/03/04) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">11 · Maquetado · Iteración 1</span>
+          <h2>Catálogo de Técnicas Artesanales</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-02 + HU-03 + HU-04 · Catálogo de técnicas</span>
+              <h3>Gestión de catálogos maestros</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">Pantalla con tarjetas que muestran cada técnica artesanal con su nombre, descripción y acciones de editar y eliminar.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>HU-02:</strong> Agregar nuevos elementos (Media · 2 pts)</p>
+                <p class="hu-list-item"><strong>HU-03:</strong> Editar elementos (Baja · 2 pts)</p>
+                <p class="hu-list-item"><strong>HU-04:</strong> Eliminar elementos (Baja · 3 pts)</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 1 (Fundamentos)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> La eliminación pide confirmación antes de ejecutarse para evitar pérdidas accidentales.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter1_2.jpg" alt="Catálogo de Técnicas Artesanales" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 1 · Pantalla 1/6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 1 · Pantalla 2 · Modal agregar técnica (HU-02) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">11 · Maquetado · Iteración 1</span>
+          <h2>Modal · Agregar nueva técnica</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-02 · Agregar elementos al catálogo</span>
+              <h3>Captura rápida desde un modal</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">Diálogo que aparece al presionar «Nuevo elemento» en el catálogo de técnicas. El artesano captura solo el nombre y una descripción opcional.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Media · 2 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 1 (Fundamentos)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El campo «Nombre» es obligatorio; el sistema impide guardar si está vacío.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter1_4.jpg" alt="Modal agregar técnica" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 1 · Pantalla 2/6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 1 · Pantalla 3 · Catálogo de Proveedores (HU-02/03/04) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">11 · Maquetado · Iteración 1</span>
+          <h2>Catálogo de Proveedores</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-02 + HU-03 + HU-04 · Catálogo de proveedores</span>
+              <h3>Misma estructura, distinto dominio</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El catálogo de proveedores reutiliza el patrón del catálogo de técnicas: tarjetas con nombre, descripción y acciones de gestión.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>HU-02:</strong> Agregar proveedor (Media · 2 pts)</p>
+                <p class="hu-list-item"><strong>HU-03:</strong> Editar proveedor (Baja · 2 pts)</p>
+                <p class="hu-list-item"><strong>HU-04:</strong> Eliminar proveedor (Baja · 3 pts)</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 1 (Fundamentos)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> Un proveedor referenciado por una compra de insumo no puede eliminarse hasta que se reasigne.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter1_3.jpg" alt="Catálogo de Proveedores" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 1 · Pantalla 3/6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 1 · Pantalla 4 · Modal agregar proveedor (HU-02) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">11 · Maquetado · Iteración 1</span>
+          <h2>Modal · Agregar nuevo proveedor</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-02 · Agregar elementos al catálogo</span>
+              <h3>Mismo patrón modal para todos los catálogos</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">Reutilización del componente de diálogo para mantener consistencia en la experiencia de usuario al alimentar cualquier catálogo del sistema.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Media · 2 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 1 (Fundamentos)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El campo «Nombre» es obligatorio; se valida que no exista un proveedor con el mismo nombre.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter1_1.jpg" alt="Modal agregar proveedor" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 1 · Pantalla 4/6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 1 · Pantalla 5 · Inventario de Materiales (HU-05) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">11 · Maquetado · Iteración 1</span>
+          <h2>Inventario de Materiales</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-05 · Registro de entrada de materia prima</span>
+              <h3>Stock visible de un vistazo</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">Vista que lista cada material con su unidad, costo unitario, cantidad en stock y proveedor asociado, con filtros por unidad y orden por fecha de ingreso.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 3 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 1 (Fundamentos)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> Los costos y cantidades se actualizan automáticamente al registrar nuevas entradas del mismo material.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter1_5.jpg" alt="Inventario de materiales" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 1 · Pantalla 5/6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 1 · Pantalla 6 · Modal registrar materia prima (HU-05) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">11 · Maquetado · Iteración 1</span>
+          <h2>Modal · Registrar materia prima</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-05 · Registro de entrada de materia prima</span>
+              <h3>Captura completa de un insumo</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El formulario solicita nombre del material, costo unitario, cantidad ingresada, proveedor (del catálogo) y unidad de medida. Esta información alimenta luego el costeo de cada pieza.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 3 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 1 (Fundamentos)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El proveedor debe existir previamente en el catálogo; el costo unitario y la cantidad deben ser numéricos positivos.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter1_6.jpg" alt="Modal registrar materia prima" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 1 · Pantalla 6/6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIVISOR ITERACIÓN 2 ========== -->
+    <section data-transition="zoom">
+      <div class="iter-divider">
+        <div class="iter-divider-grid">
+          <div class="iter-divider-number">
+            <span class="label">Iteración</span>02
+          </div>
+          <div class="iter-divider-content">
+            <h2>Inventario<br/><span>de piezas</span></h2>
+            <p>Registro de nuevas artesanías con material, técnica, descripción y stock; carga de fotografías de cada pieza con vista de galería y miniaturas.</p>
+            <div class="iter-divider-tags">
+              <span class="iter-divider-tag ochre">HU-06</span>
+              <span class="iter-divider-tag ochre">HU-07</span>
+            </div>
+          </div>
+        </div>
+        <div class="iter-divider-footer">
+          <span class="brand">Artesa<span style="color: var(--red);">Trace</span></span>
+          <span>Sprint 2 · Inventario</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 14. MAQUETADO: CATÁLOGO (HU-06) ========== -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">12 · Maquetado · Iteración 2</span>
+          <h2>Catálogo de artesanías</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-06 · Registro de nueva artesanía</span>
+              <h3>El corazón del inventario digital</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">Vista del catálogo donde el artesano da de alta cada pieza seleccionando material, técnica y nombre.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 5 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 2 (Inventario)</p>
+                <p class="hu-list-item"><strong>Relacionada con:</strong> HU-07 (fotografías)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> Todos los campos obligatorios deben estar llenos. El sistema asigna automáticamente el estado «Disponible».
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/mockup_catalogo.jpg" alt="Mockup Catálogo" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Maquetado 2/5</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ITERACIÓN 2 · Pantallas reales ========== -->
+
+    <!-- Iter 2 · Pantalla 1 · Formulario registrar artesanía (HU-06 + HU-07) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">12 · Maquetado · Iteración 2</span>
+          <h2>Registrar nueva artesanía</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-06 + HU-07 · Registro + Fotografías</span>
+              <h3>Una sola pantalla, dos historias</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El artesano captura nombre, categoría, técnica, descripción y stock inicial; en paralelo arrastra o selecciona las fotografías de la pieza, con una marcada como principal.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>HU-06:</strong> Registro de nueva artesanía (5 pts · Alta)</p>
+                <p class="hu-list-item"><strong>HU-07:</strong> Subir fotografías de la pieza (3 pts · Alta)</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 2 (Inventario)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> Se permite arrastrar archivos PNG o JPG de hasta 10 MB; la primera imagen se usa como portada en el catálogo.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter2_2.jpg" alt="Formulario registrar artesanía" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 2 · Pantalla 1/2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 2 · Pantalla 2 · Detalle de artesanía con fotos (HU-07) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">12 · Maquetado · Iteración 2</span>
+          <h2>Detalle de artesanía con galería</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-07 · Galería de fotografías de la pieza</span>
+              <h3>Ficha técnica con foto principal y miniaturas</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">Vista de detalle donde la foto principal ocupa el espacio destacado y las miniaturas permiten cambiar la vista. Acompaña la ficha técnica con material, técnica, dimensiones y peso.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 3 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 2 (Inventario)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> Cada pieza puede tener múltiples fotografías; siempre debe existir al menos una marcada como principal.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter2_1.jpg" alt="Detalle de artesanía con galería" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 2 · Pantalla 2/2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIVISOR ITERACIÓN 3 ========== -->
+    <section data-transition="zoom">
+      <div class="iter-divider">
+        <div class="iter-divider-grid">
+          <div class="iter-divider-number">
+            <span class="label">Iteración</span>03
+          </div>
+          <div class="iter-divider-content">
+            <h2>Costeo<br/><span>y precio justo</span></h2>
+            <p>La historia más compleja del proyecto: cálculo automático del precio sugerido sumando insumos y mano de obra, con margen de ganancia ajustable y asignación de precio final por el artesano.</p>
+            <div class="iter-divider-tags">
+              <span class="iter-divider-tag ochre">HU-08</span>
+              <span class="iter-divider-tag">HU-09</span>
+            </div>
+          </div>
+        </div>
+        <div class="iter-divider-footer">
+          <span class="brand">Artesa<span style="color: var(--red);">Trace</span></span>
+          <span>Sprint 3 · Costeo</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 15. MAQUETADO: COSTEO (HU-08) ========== -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">13 · Maquetado · Iteración 3</span>
+          <h2>Panel de costeo</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-08 · Cálculo de precio sugerido</span>
+              <h3>La historia más compleja: 8 puntos</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El sistema suma costos de insumos y multiplica las horas de trabajo por la tarifa, sugiriendo un precio de venta justo en tiempo real.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 8 puntos · Riesgo Alto</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 3 (Costeo)</p>
+                <p class="hu-list-item"><strong>Relacionada con:</strong> HU-09 (precio final)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El cálculo se actualiza dinámicamente si el usuario modifica las horas trabajadas o los materiales.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/mockup_costeo.jpg" alt="Mockup Panel de Costeo" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Maquetado 3/5</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ITERACIÓN 3 · Pantallas reales ========== -->
+
+    <!-- Iter 3 · Pantalla 1 · Formulario detallado de costeo (HU-08 + HU-09) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">13 · Maquetado · Iteración 3</span>
+          <h2>Desglose de costeo de una pieza</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-08 + HU-09 · Costeo y precio final</span>
+              <h3>La fórmula detrás del precio justo</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El artesano agrega insumos con cantidad y unidad. El sistema calcula subtotales, suma materiales y mano de obra, aplica el margen de ganancia y sugiere un precio que el artesano puede ajustar.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>HU-08:</strong> Cálculo de precio sugerido (8 pts · Alta)</p>
+                <p class="hu-list-item"><strong>HU-09:</strong> Asignación de precio de venta final (2 pts · Media)</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 3 (Costeo)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El precio sugerido se recalcula al agregar, modificar o eliminar cualquier insumo del desglose.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter3_1.jpg" alt="Formulario detallado de costeo" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 3 · Pantalla 1/1</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIVISOR ITERACIÓN 4 ========== -->
+    <section data-transition="zoom">
+      <div class="iter-divider">
+        <div class="iter-divider-grid">
+          <div class="iter-divider-number">
+            <span class="label">Iteración</span>04
+          </div>
+          <div class="iter-divider-content">
+            <h2>Certificación<br/><span>e identidad digital</span></h2>
+            <p>Generación de código QR único por pieza, ensamblado del certificado de autenticidad en PDF y vista pública de verificación accesible sin sesión para el cliente final.</p>
+            <div class="iter-divider-tags">
+              <span class="iter-divider-tag ochre">HU-10</span>
+              <span class="iter-divider-tag ochre">HU-11</span>
+              <span class="iter-divider-tag ochre">HU-12</span>
+            </div>
+          </div>
+        </div>
+        <div class="iter-divider-footer">
+          <span class="brand">Artesa<span style="color: var(--red);">Trace</span></span>
+          <span>Sprint 4 · Certificación</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 16. MAQUETADO: CERTIFICADO QR (HU-10, HU-11) ========== -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">14 · Maquetado · Iteración 4</span>
+          <h2>Certificado de autenticidad con QR</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-10 + HU-11 · QR + PDF</span>
+              <h3>Identidad digital infalsificable</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El sistema asigna un QR único a cada pieza y ensambla un PDF con los datos, foto y código de verificación.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>HU-10:</strong> Generación de QR único (5 pts)</p>
+                <p class="hu-list-item"><strong>HU-11:</strong> Ensamblado de certificado PDF (5 pts)</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 4 (Certificación)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El QR apunta a la URL de la ficha técnica y es irrepetible en BD. El PDF pesa menos de 2 MB.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/mockup_certificado.jpg" alt="Mockup Certificado QR" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Maquetado 4/5</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ITERACIÓN 4 · Pantallas reales ========== -->
+
+    <!-- Iter 4 · Pantalla 1 · Vista pública de verificación (HU-12) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">14 · Maquetado · Iteración 4</span>
+          <h2>Verificación pública de autenticidad</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-12 · Verificación pública (Escaneo cliente)</span>
+              <h3>El destino del QR cuando el cliente lo escanea</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">Al escanear el código QR de una pieza, el cliente accede a esta ficha pública con la información de autenticidad, foto y folio del certificado.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Cliente final (público)</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 8 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 4 (Certificación)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> La vista debe ser accesible sin iniciar sesión y desde cualquier dispositivo con conexión a internet.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter4_1.jpg" alt="Vista pública de verificación QR" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 4 · Pantalla 1/1</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIVISOR ITERACIÓN 5 ========== -->
+    <section data-transition="zoom">
+      <div class="iter-divider">
+        <div class="iter-divider-grid">
+          <div class="iter-divider-number">
+            <span class="label">Iteración</span>05
+          </div>
+          <div class="iter-divider-content">
+            <h2>Ventas<br/><span>y consignación</span></h2>
+            <p>Registro de salida de piezas a consignación, captura de ventas con monto cobrado y canal, y actualización automática del estado del inventario al concretarse cada operación.</p>
+            <div class="iter-divider-tags">
+              <span class="iter-divider-tag ochre">HU-13</span>
+              <span class="iter-divider-tag ochre">HU-14</span>
+              <span class="iter-divider-tag ochre">HU-15</span>
+            </div>
+          </div>
+        </div>
+        <div class="iter-divider-footer">
+          <span class="brand">Artesa<span style="color: var(--red);">Trace</span></span>
+          <span>Sprint 5 · Ventas</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 17. MAQUETADO: VENTA FINAL (HU-14) ========== -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">15 · Maquetado · Iteración 5</span>
+          <h2>Registro de venta final</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-14 · Registro de venta final</span>
+              <h3>Cierre del ciclo comercial</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El artesano registra la venta indicando canal, monto cobrado y forma de pago. El sistema calcula la ganancia real.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 3 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 5 (Ventas)</p>
+                <p class="hu-list-item"><strong>Dispara:</strong> HU-15 (actualización inventario)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> Una pieza marcada como «Vendida» ya no puede ser editada ni enviada a consignación.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/mockup_venta.jpg" alt="Mockup Venta Final" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Maquetado 5/5</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ITERACIÓN 5 · Pantallas reales ========== -->
+
+    <!-- Iter 5 · Pantalla 1 · Cambio de estado a consignación (HU-13) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">15 · Maquetado · Iteración 5</span>
+          <h2>Cambio de estado — Consignación</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-13 · Registro de salida a consignación</span>
+              <h3>Trazabilidad de piezas fuera del taller</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El artesano selecciona la pieza, captura la galería receptora, fecha de salida y notas. La pieza se oculta de «Disponibles» hasta su venta o devolución.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 3 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 5 (Ventas)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> La pieza cambia automáticamente de estado y se conserva el historial de movimientos.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter5_1.jpg" alt="Cambio de estado consignación" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 5 · Pantalla 1/2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 5 · Pantalla 2 · Estado del inventario por estado (HU-15) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">15 · Maquetado · Iteración 5</span>
+          <h2>Estado del inventario</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-15 · Actualización automática de inventario</span>
+              <h3>Vista filtrada por estado de pieza</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El inventario se organiza en pestañas: Disponibles, En Consignación, Vendidas y Dadas de baja. El sistema mueve automáticamente las piezas al registrar consignaciones o ventas.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Alta · 5 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 5 (Ventas)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El conteo de piezas disponibles se actualiza en tiempo real al cambiar el estado de cualquier pieza.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter5_2.jpg" alt="Estado del inventario" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 5 · Pantalla 2/2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DIVISOR ITERACIÓN 6 ========== -->
+    <section data-transition="zoom">
+      <div class="iter-divider">
+        <div class="iter-divider-grid">
+          <div class="iter-divider-number">
+            <span class="label">Iteración</span>06
+          </div>
+          <div class="iter-divider-content">
+            <h2>Reportes<br/><span>y respaldo</span></h2>
+            <p>Cierre del ciclo de desarrollo: generación de reportes de ventas con métricas, gráficos y ranking de piezas más vendidas, y módulo de respaldo de la base de datos en formato SQL.</p>
+            <div class="iter-divider-tags">
+              <span class="iter-divider-tag ochre">HU-16</span>
+              <span class="iter-divider-tag">HU-17</span>
+            </div>
+          </div>
+        </div>
+        <div class="iter-divider-footer">
+          <span class="brand">Artesa<span style="color: var(--red);">Trace</span></span>
+          <span>Sprint 6 · Reportes</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ITERACIÓN 6 · Pantallas reales ========== -->
+
+    <!-- Iter 6 · Pantalla 1 · Reporte de ventas (HU-16) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">16 · Maquetado · Iteración 6</span>
+          <h2>Reporte de ventas</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge"><span class="dot"></span> HU-16 · Generación de reporte de ventas</span>
+              <h3>Vista de inteligencia comercial</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El sistema agrega los datos del periodo y los presenta en métricas, gráfico de ingresos por semana, ranking de piezas más vendidas y detalle exportable.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Artesano / Administrador</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Media · 5 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 6 (Reportes)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El reporte se filtra por mes o año y se exporta sin alterar los datos originales del sistema.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter6_1.jpg" alt="Reporte de ventas" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 6 · Pantalla 1/2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Iter 6 · Pantalla 2 · Respaldo de datos (HU-17) -->
+    <section data-transition="convex">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">16 · Maquetado · Iteración 6</span>
+          <h2>Respaldo de base de datos</h2>
+        </div>
+        <div class="slide-body">
+          <div class="mockup-layout">
+            <div class="mockup-info">
+              <span class="hu-badge red"><span class="dot"></span> HU-17 · Respaldo de base de datos</span>
+              <h3>Protección de la información del taller</h3>
+              <p style="font-size: 0.72em; color: var(--muted);">El sistema permite descargar un respaldo completo en formato SQL con la estructura y los datos del sistema, e historial de respaldos anteriores.</p>
+              <div class="hu-list">
+                <p class="hu-list-item"><strong>Usuario:</strong> Administrador</p>
+                <p class="hu-list-item"><strong>Prioridad:</strong> Baja · 2 puntos</p>
+                <p class="hu-list-item"><strong>Iteración:</strong> 6 (Reportes)</p>
+              </div>
+              <div class="validacion-box">
+                <strong>Validación:</strong> El archivo generado debe contener todas las tablas y sus relaciones, descargable como .sql restaurable.
+              </div>
+            </div>
+            <div class="mockup-frame">
+              <img src="assets/iter6_2.jpg" alt="Respaldo de datos" />
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Iteración 6 · Pantalla 2/2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONCLUSIONES Y APRENDIZAJES ESPERADOS ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">17 · Cierre del proyecto</span>
+          <h2>Conclusiones y aprendizajes esperados</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Reflexiones técnicas, metodológicas y humanas del desarrollo de ArtesaTrace.</p>
+        </div>
+        <div class="slide-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; height: 100%;">
+
+            <div style="background: white; border-radius: 12px; padding: 24px 28px; box-shadow: 0 4px 16px rgba(31,44,76,0.06); border-left: 5px solid var(--red); display: flex; flex-direction: column;">
+              <h3 style="margin: 0 0 14px; font-size: 1.15em;">Conclusiones</h3>
+              <p style="font-size: 0.7em; line-height: 1.7; text-align: justify; margin: 0; color: var(--ink);">
+                El desarrollo de ArtesaTrace confirmó que un proyecto de ingeniería de software gana solidez cuando se construye sobre un modelado riguroso del dominio: el diagrama entidad–relación, el modelo relacional y el de clases no fueron documentos decorativos, sino la guía concreta para tomar decisiones de implementación. Dividir el trabajo en seis iteraciones de Scrum permitió validar funcionalidad parcial al final de cada Sprint, ajustar el rumbo sin reescribir el trabajo previo y mantener un ritmo sostenible para un equipo pequeño. El resultado es un sistema que atiende los tres problemas detectados al inicio —control de inventario, cálculo de costos y certificación de autenticidad— mediante una interfaz pensada para artesanos sin formación técnica, donde la tecnología se subordina al oficio y no al revés.
+              </p>
+            </div>
+
+            <div style="background: white; border-radius: 12px; padding: 24px 28px; box-shadow: 0 4px 16px rgba(31,44,76,0.06); border-left: 5px solid var(--navy); display: flex; flex-direction: column;">
+              <h3 style="margin: 0 0 14px; font-size: 1.15em;">Aprendizajes esperados</h3>
+              <p style="font-size: 0.7em; line-height: 1.7; text-align: justify; margin: 0; color: var(--ink);">
+                Más allá del producto entregado, el proceso consolidó competencias prácticas en gestión ágil con Scrum, modelado UML, diseño de bases de datos relacionales y desarrollo full-stack con Node.js, React y PostgreSQL, incluyendo la generación dinámica de PDF y códigos QR. También fortaleció habilidades de comunicación técnica al traducir requerimientos cotidianos del taller en historias de usuario, criterios de aceptación y casos de uso. En el plano humano, el equipo se llevó la convicción de que la ingeniería de software puede atender problemas reales del entorno cultural y económico de Oaxaca cuando se acerca con respeto al contexto del usuario final, y que la certificación digital con QR es una vía concreta y de bajo costo para proteger la identidad de las piezas artesanales frente a las imitaciones industriales.
+              </p>
+            </div>
+
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Conclusiones · Aprendizajes esperados</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 33. REFERENCIAS BIBLIOGRÁFICAS ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">17 · Referencias bibliográficas</span>
+          <h2>Fuentes consultadas (APA 7)</h2>
+          <p style="font-size: 0.7em; color: var(--muted); margin: 0;">Bibliografía consultada durante la investigación, diseño y desarrollo de ArtesaTrace.</p>
+        </div>
+        <div class="slide-body">
+          <div class="refs-grid">
+            <div class="ref-item red">
+              <span class="ref-authors">Aguilar Ramos, C., &amp; Alfonzo, V. (2024).</span> <span class="ref-title">La protección contra la apropiación cultural a la luz de la Ley Harp en México.</span> Instituto de Investigaciones Jurídicas de la UNAM.<br/>
+              <span class="ref-url">https://archivos.juridicas.unam.mx/www/bjv/libros/15/7424/5.pdf</span>
+            </div>
+            <div class="ref-item navy">
+              <span class="ref-authors">Comité de Planeación para el Desarrollo del Estado de Oaxaca (COPLADE). (2016).</span> <span class="ref-title">Diagnóstico de la Cadena de Valor Artesanías Textil en las Regiones de Oaxaca</span> (inf. téc.). Gobierno del Estado de Oaxaca.<br/>
+              <span class="ref-url">https://www.oaxaca.gob.mx/coplade/wp-content/uploads/sites/29/2017/04/Perfiles/AnexosPerfiles/1.%20CV%20TEXTIL.pdf</span>
+            </div>
+            <div class="ref-item">
+              <span class="ref-authors">Instituto Nacional de Estadística y Geografía (INEGI). (2023).</span> <span class="ref-title">Estadísticas a propósito del Día Internacional del Artesano</span> (Comunicado de Prensa núm. 159/23). INEGI.<br/>
+              <span class="ref-url">https://www.inegi.org.mx/contenidos/saladeprensa/aproposito/2023/EAP_ART23.pdf</span>
+            </div>
+            <div class="ref-item green">
+              <span class="ref-authors">Larman, C. (2004).</span> <span class="ref-title">Applying UML and Patterns: An Introduction to Object-Oriented Analysis and Design and Iterative Development</span> (3.ª ed.). Prentice Hall.
+            </div>
+            <div class="ref-item navy">
+              <span class="ref-authors">Ramón Rodríguez, C. M., Paz Calderón, Y., Reyes García, M., &amp; Espinosa Espíndola, M. T. (2018).</span> <span class="ref-title">La ropa de tipo artesanal: desafíos y oportunidades en su comercialización.</span> Revista Científica Visión de Futuro, 22(2), 1-19.<br/>
+              <span class="ref-url">https://www.redalyc.org/articulo.oa?id=357959312001</span>
+            </div>
+            <div class="ref-item red">
+              <span class="ref-authors">Schwaber, K., &amp; Sutherland, J. (2020, noviembre).</span> <span class="ref-title">The Scrum Guide: The Definitive Guide to Scrum: The Rules of the Game</span> [Scrum.org].<br/>
+              <span class="ref-url">https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf</span>
+            </div>
+            <div class="ref-item green" style="grid-column: 1 / -1;">
+              <span class="ref-authors">Sommerville, I. (2015).</span> <span class="ref-title">Software Engineering</span> (10.ª ed.). Pearson.
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>7 referencias · estilo APA 7</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 18. CIERRE ========== -->
+    <section data-transition="zoom">
+      <div class="cierre">
+        <div class="dots-deco">
+          <span class="dot-ochre"></span>
+          <span class="dot-red-c"></span>
+          <span style="background: var(--cream);"></span>
+        </div>
+        <h1>¡Gracias!</h1>
+       
+        <p style="margin-top: 26px; font-size: 0.78em; opacity: 0.75;">
+          Luis Fernando González Miguel · Luis Daniel Martínez Miguel<br/>
+          <span style="font-size: 0.85em;">Fundamentos de Ingeniería de Software · Grupo 5SU · Abril 2026</span>
+        </p>
+        <div class="dots-deco" style="margin-top: 32px;">
+          <span class="dot-ochre"></span>
+          <span class="dot-red-c"></span>
+          <span style="background: var(--cream);"></span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Reveal.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1280,
+    height: 720,
+    margin: 0.02,
+    minScale: 0.2,
+    maxScale: 2.0,
+    hash: true,
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    keyboard: true,
+    overview: true,
+    touch: true,
+    fragments: true,
+    history: false,
+    center: false,
+  });
+</script>
+</body>
+</html>
