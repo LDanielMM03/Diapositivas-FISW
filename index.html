@@ -1639,6 +1639,59 @@
       </div>
     </section>
 
+    <!-- ========== DIAGRAMA UML DE CASOS DE USO (alto nivel) ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">08 · Análisis de requisitos</span>
+          <h2>Diagrama de casos de uso · Alto nivel</h2>
+          <p style="font-size: 0.72em; color: var(--muted); margin: 0;">Vista UML del sistema agrupada por paquetes funcionales y sus actores.</p>
+        </div>
+        <div class="slide-body">
+          <div style="display: grid; grid-template-columns: 0.55fr 1fr; gap: 24px; flex: 1; min-height: 0;">
+
+            <!-- Panel lateral con leyenda -->
+            <div style="display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: hidden;">
+
+              <div style="background: white; border-radius: 10px; padding: 12px 16px; box-shadow: 0 3px 12px rgba(31,44,76,0.06); border-left: 4px solid var(--navy);">
+                <h4 style="margin: 0 0 6px; font-size: 0.85em;">Tres actores</h4>
+                <div style="display: flex; flex-direction: column; gap: 4px; font-size: 0.62em; color: var(--ink);">
+                  <span><strong style="color: var(--navy);">Artesano</strong> · operador principal, atraviesa los tres paquetes</span>
+                  <span><strong style="color: var(--red);">Comprador</strong> · acceso público sin sesión</span>
+                  <span><strong style="color: var(--ochre);">DBA</strong> · mantenimiento técnico de la base</span>
+                </div>
+              </div>
+
+              <div style="background: white; border-radius: 10px; padding: 12px 16px; box-shadow: 0 3px 12px rgba(31,44,76,0.06); border-left: 4px solid var(--ochre);">
+                <h4 style="margin: 0 0 6px; font-size: 0.85em;">Tres paquetes funcionales</h4>
+                <div style="display: flex; flex-direction: column; gap: 5px; font-size: 0.6em; color: var(--ink);">
+                  <span><strong>Gestión Operativa</strong> — Inventario, materia prima y costeo.</span>
+                  <span><strong>Mercado y Autenticidad</strong> — Ventas, certificados QR y verificación pública.</span>
+                  <span><strong>Administración</strong> — Seguridad, reportes y respaldo de datos.</span>
+                </div>
+              </div>
+
+              <div style="background: var(--cream-2); border-radius: 10px; padding: 12px 16px; border-left: 4px solid var(--red);">
+                <h4 style="margin: 0 0 6px; font-size: 0.85em; color: var(--navy);">Lectura del diagrama</h4>
+                <p style="margin: 0; font-size: 0.6em; color: var(--ink); line-height: 1.5;">Las líneas continuas indican asociación directa (el actor ejecuta el caso de uso). La línea punteada del <strong>Comprador → Consulta Pública</strong> denota un acceso de solo lectura, sin autenticación.</p>
+              </div>
+
+            </div>
+
+            <!-- Diagrama UML -->
+            <div class="diagrama-frame" style="padding: 12px;">
+              <img src="assets/diagrama_casos_uso.jpg" alt="Diagrama de casos de uso de alto nivel" />
+            </div>
+
+          </div>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Casos de uso · diagrama UML</span>
+        </div>
+      </div>
+    </section>
+
     <!-- ========== CRONOGRAMA DE ACTIVIDADES ========== -->
     <section data-transition="slide">
       <div class="slide-wrap">
@@ -2673,7 +2726,7 @@
       <div class="slide-wrap">
         <div class="slide-header">
           <span class="section-tag">17 · Referencias bibliográficas</span>
-          <h2>Fuentes consultadas</h2>
+          <h2>Fuentes consultadas (APA 7)</h2>
           <p style="font-size: 0.7em; color: var(--muted); margin: 0;">Bibliografía consultada durante la investigación, diseño y desarrollo de ArtesaTrace.</p>
         </div>
         <div class="slide-body">
@@ -2708,7 +2761,7 @@
         </div>
         <div class="slide-footer">
           <span class="brand">Artesa<span>Trace</span></span>
-          <span>Referencias</span>
+          <span>7 referencias · estilo APA 7</span>
         </div>
       </div>
     </section>
@@ -2722,7 +2775,7 @@
           <span style="background: var(--cream);"></span>
         </div>
         <h1>¡Gracias!</h1>
-       
+        <p style="margin-top: 16px; font-size: 1em;">¿Preguntas sobre <span class="accent">ArtesaTrace</span>?</p>
         <p style="margin-top: 26px; font-size: 0.78em; opacity: 0.75;">
           Luis Fernando González Miguel · Luis Daniel Martínez Miguel<br/>
           <span style="font-size: 0.85em;">Fundamentos de Ingeniería de Software · Grupo 5SU · Abril 2026</span>
