@@ -757,6 +757,58 @@
     font-size: 0.92em;
   }
 
+  /* Tabla de Factores de Calidad (ISO/IEC) */
+  .calidad-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(31,44,76,0.08);
+    table-layout: fixed;
+    font-size: 0.55em;
+  }
+  .calidad-table th {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 9px 10px;
+    text-align: left;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.04em;
+    font-size: 1em;
+    text-transform: uppercase;
+    border-bottom: 3px solid var(--ochre);
+  }
+  .calidad-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(31, 44, 76, 0.06);
+    vertical-align: top;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .calidad-table tr:nth-child(even) td { background: var(--cream-2); }
+  .calidad-table tr:last-child td { border-bottom: none; }
+  .calidad-table td strong { color: var(--navy); font-size: 1.05em; }
+  .calidad-table .cal-sub {
+    display: block;
+    font-size: 0.85em;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .calidad-table .cal-tag {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.85em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-right: 5px;
+    text-transform: uppercase;
+  }
+
   /* Cronograma Gantt-style */
   .cronograma {
     background: white;
@@ -2681,6 +2733,77 @@
         <div class="slide-footer">
           <span class="brand">Artesa<span>Trace</span></span>
           <span>Iteración 6 · Pantalla 2/2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FACTORES DE CALIDAD (ISO/IEC) ========== -->
+    <section data-transition="slide">
+      <div class="slide-wrap">
+        <div class="slide-header">
+          <span class="section-tag">17 · Evaluación de calidad</span>
+          <h2>Factores de Calidad del Software</h2>
+          <p style="font-size: 0.7em; color: var(--muted); margin: 0;">Evaluación de ArtesaTrace bajo el modelo ISO/IEC con base en los requerimientos del proyecto.</p>
+        </div>
+        <div class="slide-body">
+          <table class="calidad-table">
+            <thead>
+              <tr>
+                <th style="width: 13%;">Factor</th>
+                <th style="width: 22%;">Características específicas</th>
+                <th style="width: 26%;">Cómo se puede medir</th>
+                <th style="width: 39%;">Cumplimiento en el software (ArtesaTrace)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Funcionalidad</strong></td>
+                <td>Completitud, exactitud, adecuación y cumplimiento de normativas.</td>
+                <td>Casos de prueba superados vs. planificados; matriz de trazabilidad de requisitos funcionales.</td>
+                <td><span class="cal-tag">Alto</span> Cubre todos los requisitos funcionales (RF-001 a RF-015), resolviendo control de inventario, costeo y generación de certificados QR para los artesanos.</td>
+              </tr>
+              <tr>
+                <td><strong>Confiabilidad</strong></td>
+                <td>Madurez, disponibilidad, tolerancia a fallos y capacidad de recuperación.</td>
+                <td>Tiempo medio entre fallas (MTBF), porcentaje de tiempo en línea (uptime), tiempo de recuperación.</td>
+                <td><span class="cal-tag">Alto</span> Exige 99.9 % de disponibilidad (RNF-001) y contempla recuperación mediante respaldos automáticos y manuales semanales en formato .sql (RNF-009, HU-17).</td>
+              </tr>
+              <tr>
+                <td><strong>Usabilidad</strong></td>
+                <td>Capacidad de aprendizaje, facilidad de uso, protección contra errores, estética.</td>
+                <td>Pruebas de usuario (tiempo en completar una tarea), encuestas de satisfacción, tasa de errores.</td>
+                <td><span class="cal-tag">Alto</span> Cumple con el RNF-002 (interfaz adaptada a baja alfabetización digital) mediante validación continua de mockups de fácil uso con artesanos reales.</td>
+              </tr>
+              <tr>
+                <td><strong>Eficiencia</strong><br/><span class="cal-sub">(Rendimiento)</span></td>
+                <td>Comportamiento en el tiempo, uso de recursos y escalabilidad.</td>
+                <td>Tiempos de respuesta (milisegundos), pruebas de carga, uso de CPU y RAM del servidor.</td>
+                <td><span class="cal-tag">Alto</span> Se garantiza con RNF-003 (cálculos y PDFs en &lt; 3 seg), RNF-007 (soporte y escalabilidad para 10,000 piezas) y RNF-013 (compresión de fotografías).</td>
+              </tr>
+              <tr>
+                <td><strong>Mantenibilidad</strong></td>
+                <td>Modularidad, reusabilidad, capacidad de análisis y de ser modificado.</td>
+                <td>Tiempo medio de reparación (MTTR), complejidad del código, cobertura de pruebas.</td>
+                <td><span class="cal-tag">Alto</span> Desarrollado en módulos independientes con metodología ágil Scrum. El RNF-010 exige que el código Node.js/React esté documentado con JSDoc.</td>
+              </tr>
+              <tr>
+                <td><strong>Portabilidad</strong></td>
+                <td>Adaptabilidad, facilidad de instalación y convivencia en diversos entornos.</td>
+                <td>Número de plataformas compatibles, esfuerzo para migrar, pruebas multiplataforma.</td>
+                <td><span class="cal-tag">Alto</span> Aplicación web que cumple con RNF-004 (Chrome, Safari, Firefox) y RNF-008 (diseño responsivo adaptable a computadoras de escritorio y tablets).</td>
+              </tr>
+              <tr>
+                <td><strong>Seguridad</strong></td>
+                <td>Confidencialidad, integridad, no repudio y autenticidad.</td>
+                <td>Pruebas de penetración, cantidad de vulnerabilidades, escaneos de código.</td>
+                <td><span class="cal-tag">Alto</span> Cumple con RF-010 (autenticación segura), RNF-005 (encriptación bcrypt de contraseñas) y RNF-006 (códigos QR encriptados e irrepetibles).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <span class="brand">Artesa<span>Trace</span></span>
+          <span>Cuadro 1 · Modelo ISO/IEC · 7 factores</span>
         </div>
       </div>
     </section>
